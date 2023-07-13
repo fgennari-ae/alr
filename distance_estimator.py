@@ -2,6 +2,7 @@ import cv2 as cv
 from cv2 import aruco
 import numpy as np
 
+#change calibration data
 calib_data_path = r"/Users/fgennari/Downloads/MultiMatrix.npz"
 
 calib_data = np.load(calib_data_path)
