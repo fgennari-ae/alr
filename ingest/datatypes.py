@@ -7,6 +7,7 @@ class Event:
                  audio_tag = 'ND',
                  vehicle_id = 'ND',
                  sw_release = 'ND',
+                 country = 'ND',
                  city = 'ND',
                  map_version = 'ND',
                  driver = 'ND',
@@ -24,6 +25,7 @@ class Event:
         self.vehicle_id = vehicle_id
         self.sw_release = sw_release
         self.session_id = session_id
+        self.country= country
         self.city= city
         self.map_version = map_version
         self.driver = driver
@@ -69,6 +71,8 @@ class Session:
         event.time = self.start_time
         event.driver = self.raw_metadata["drive_info"]["Base_Data"]["driver"] 
         event.codriver = self.raw_metadata["drive_info"]["Base_Data"]["co_pilot"] 
+        event.country = self.raw_metadata["drive_info"]["Data_Info"]["country"] 
+        event.mission = self.raw_metadata["drive_info"]["Data_Info"]["driver_comment"] 
         self.events.append(event)
 
     def print_events(self):
