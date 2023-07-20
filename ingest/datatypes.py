@@ -56,6 +56,7 @@ class Session:
         time_raw = session_id.split("_")[3]
         self.start_time = time_raw[0:2] + ":" + time_raw[2:4] + ":" + time_raw[4:6]
         self.raw_metadata = metadata
+        self.skip = False
         self.events = []
         self.local_folder = download_folder + session_id + "/" 
 

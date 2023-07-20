@@ -29,6 +29,28 @@ class AwsHelper():
         # save the data in bytes format
         return json.loads(s3_object_body.read())
 
+    def _get_event_timestamp_from_frame_id(self, event):
+        logpath = event.remote_path.rsplit("/",2)[0]+"/AV_logs/DisplayLogs/"
+        response = self.client.list_objects_v2(Bucket=self.bucket,Prefix=logpath) 
+        possible_logs = []
+        lines = []
+        pattern_str = r'\d{2}:\d{2}:\d{2}'
+        try:
+            for object in response['Contents']:
+                if object['Key'].endswith('.log'):
+                    possible_logs.append(object['Key'])
+                    s3_response = self.client.get_object(Bucket=self.bucket, Key=object['Key'])
+                    s3_object = s3_response.get('Body').readlines()
+                    for line in s3_object:
+                        if b'frame: ' + event.audio_tag.split("_")[0].encode() in line:
+                            maybe_time = line.decode().split(",")[1].split(" ")[2]
+                            if re.match(pattern_str, maybe_time):
+                                return maybe_time
+        except Exception:
+            return "Not found"
+        return "Not found"
+
+
     def _get_session_annotations_paths(self, metadata):
         paths = []
         for x in metadata["FileList"]:
@@ -96,13 +118,23 @@ class AwsHelper():
         return None
     
     def get_audio_tags_from_session_locally(self, session):
-        for event in tqdm(session.events, desc="Copying locally audio tags from session " + session.session_id):
-             local_path_of_tag = session.local_folder + "/" + event.audio_tag
-             self.download_file(event.remote_path, local_path_of_tag)
-             event.local_path = local_path_of_tag
-
+        iterator = tqdm(session.events, 
+                        desc="Copying locally audio tags from session " + session.session_id, 
+                        position=0, 
+                        leave=True)
+        for event in iterator:
+            local_path_of_tag = session.local_folder + "/" + event.audio_tag
+            try:
+                self.download_file(event.remote_path, local_path_of_tag)
+                event.local_path = local_path_of_tag
+            except Exception:
+                session.skip = True
+                iterator.close()
+                print("Unable to process event " +
+                        event.audio_tag +
+                      " in session... Skipping whole session")
+                return
 
     def download_file(self, remote_path, local_path): 
         self.client.download_file(self.bucket, remote_path, local_path)
-
-
+        return

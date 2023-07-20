@@ -1,5 +1,5 @@
 from datatypes import Session, Event
-from event_db import JiraEventDb, GoogleEventDb
+from google_event_db import GoogleEventDb
 from aws_helper import AwsHelper
 import boto3
 import os, shutil
@@ -78,6 +78,7 @@ class EventDataIngest:
     def upload_new_sessions(self):
         for session_id in self.new_sessions: 
             if not self.event_db.session_exists(session_id):
-                self.event_db.upload(self.new_sessions[session_id])
+                if not self.new_sessions[session_id].skip:
+                    self.event_db.upload(self.new_sessions[session_id])
 
 
