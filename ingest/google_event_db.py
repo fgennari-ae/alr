@@ -7,7 +7,7 @@ import logging
 import gspread
 import os
 
-logger = logging.getLogger('EventDataIngest')
+logger = logging.getLogger('GoogleEventDb')
 
 class GoogleEventDb(EventDb):
 

@@ -6,7 +6,7 @@ from datatypes import Session, Event
 from tqdm import tqdm
 import logging
 
-logger = logging.getLogger('EventDataIngest')
+logger = logging.getLogger('AwsHelper')
  
 class AwsHelper():
 
@@ -135,9 +135,9 @@ class AwsHelper():
             except Exception:
                 session.skip = True
                 iterator.close()
-                logger.error("Unable to process event " +
-                             event.audio_tag +
-                             " in session... Skipping whole session")
+                logger.warn("Unable to process event " +
+                            event.audio_tag +
+                            " in session... Skipping whole session")
                 return
 
     def download_file(self, remote_path, local_path): 

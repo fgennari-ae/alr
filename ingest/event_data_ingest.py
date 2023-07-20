@@ -9,7 +9,7 @@ import sys
 
 # Setting Logger
 
-log_filename = datetime.now().strftime('EventDataIngest_%H_%M_%d_%m_%Y.log')
+log_filename = datetime.now().strftime('logs/EventDataIngest_%H_%M_%d_%m_%Y.log')
 file_handler = logging.FileHandler(log_filename)
 file_handler.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler(sys.stdout)
