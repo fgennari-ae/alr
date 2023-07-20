@@ -1,2 +1,3 @@
 *.pyc
 ingest/credentials/*
+ingest/logs/*

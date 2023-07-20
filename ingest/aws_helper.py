@@ -4,6 +4,9 @@ import boto3
 import datetime
 from datatypes import Session, Event
 from tqdm import tqdm
+import logging
+
+logger = logging.getLogger('EventDataIngest')
  
 class AwsHelper():
 
@@ -15,11 +18,11 @@ class AwsHelper():
     def connect(self):
         try:
             self.client = boto3.client('s3')
-            print("Succesfully connected to aws")
+            logger.info("Succesfully connected to aws")
             return True
         except ClientError:
         # The bucket does not exist or you have no access.
-            print("Unable to connect to aws")
+            logger.error("Unable to connect to aws")
             return False
     
     def _get_session_metadata(self, filepath): 
@@ -125,14 +128,16 @@ class AwsHelper():
         for event in iterator:
             local_path_of_tag = session.local_folder + "/" + event.audio_tag
             try:
+                logger.debug("Trying to download " + event.remotep_path + " to " + local_path_of_tag)
                 self.download_file(event.remote_path, local_path_of_tag)
                 event.local_path = local_path_of_tag
+                logger.debug("Succesfully copied file locally")
             except Exception:
                 session.skip = True
                 iterator.close()
-                print("Unable to process event " +
-                        event.audio_tag +
-                      " in session... Skipping whole session")
+                logger.error("Unable to process event " +
+                             event.audio_tag +
+                             " in session... Skipping whole session")
                 return
 
     def download_file(self, remote_path, local_path): 

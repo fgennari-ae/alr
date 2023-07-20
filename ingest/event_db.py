@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import speech_recognition as sr
 from tqdm import tqdm
 
 class EventDb(ABC):

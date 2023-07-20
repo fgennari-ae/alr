@@ -3,8 +3,11 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 import speech_recognition as sr
 from event_db import EventDb
+import logging
 import gspread
 import os
+
+logger = logging.getLogger('EventDataIngest')
 
 class GoogleEventDb(EventDb):
 
@@ -18,7 +21,7 @@ class GoogleEventDb(EventDb):
 
     def _create_session(self, session_id):
         if not self.drive:
-            print("Drive API not set up") #TODO: Add logger
+            logger.warn("Drive API not set up") #TODO: Add logger
             return None
         try:
             file_metadata = {
@@ -30,14 +33,14 @@ class GoogleEventDb(EventDb):
             folder = self.drive.CreateFile(file_metadata)
             folder.Upload()
         except Exception as e:
-            print("There was an error creating the session folder on Drive:")
-            print(e)
+            logger.error("There was an error creating the session folder on Drive:")
+            logger.error(e)
             return None
         return folder
 
     def _create_event_in_session(self, session_key, event):
         if not self.drive:
-            print("Drive API not set up") #TODO: Add logger
+            logger.warn("Drive API not set up") #TODO: Add logger
             return
         gfile = self.drive.CreateFile({'title': event.audio_tag, 'parents': [{'id': session_key['id']}], 'supportsAllDrives': 'true'})
         # Read file and set it as the content of this instance.
@@ -49,7 +52,7 @@ class GoogleEventDb(EventDb):
             try:
                 event.comment = str(self.transcriber.recognize_google(audio, language = 'en-IN'))
             except:
-                #print("An exception occurred while transcribing the audio, ignoring")
+                logger.debug("An exception occurred while transcribing the audio, ignoring")
                 pass
             #add event info 
         event.annotation=event.audio_tag.split("_")[-1].split(".")[0]
@@ -59,7 +62,7 @@ class GoogleEventDb(EventDb):
 
     def session_exists(self, session_id):
         if session_id in self.sessions_on_drive:
-            #print("Found " + session_id + " but the session already exists on drive")
+            logger.debug("Found " + session_id + " but the session already exists on drive")
             return True
         return False
     
@@ -102,9 +105,9 @@ class GoogleEventDb(EventDb):
             self.sessions_on_drive = [i['title'] for i in file_list]
             # --- Transcribe
             self.transcriber = sr.Recognizer() 
-            print("Succesfully connected to Gdrive database")
+            logger.info("Succesfully connected to Gdrive database")
             return True
         except Exception as e:
-            print("Unsuccessful attempt of connection to Google with exeption:")
-            print(e)
+            logger.error("Unsuccessful attempt of connection to Google with exeption:")
+            logger.error(e)
             return False
