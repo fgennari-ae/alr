@@ -2,6 +2,7 @@ from datatypes import Session, Event
 from google_event_db import GoogleEventDb
 from aws_helper import AwsHelper
 from datetime import datetime
+from tabulate import tabulate
 import boto3
 import os, shutil
 import logging
@@ -51,14 +52,32 @@ class EventDataIngest:
         return sessions
 
 
-    def print_new_sessions(self):
-        print("List of all the identified sessions with annotations:")
-        if not self.new_sessions:
-            print("No new sessions to upload")
-        for session_id in self.new_sessions:
-            print([self.new_sessions[session_id].session_id, 
-                   ', Number of events: ', 
-                   len(self.new_sessions[session_id].events)])
+    def print_report(self):
+        total_skipped_events = 0
+        total_processed_events = 0
+        for sid in self.new_sessions:
+            if self.new_sessions[sid].skip:
+                total_skipped_events += len(self.new_sessions[sid].events)
+            else:
+                total_processed_events += len(self.new_sessions[sid].events)
+        detail_table_data = [[sid, 
+                              self.new_sessions[sid].skip, 
+                              len(self.new_sessions[sid].events)] for sid in self.new_sessions]
+        detail_table = tabulate(detail_table_data, 
+                                headers=['Session', 'Skipped', 'Number of Events'], 
+                                tablefmt='orgtbl')
+        summary_table = tabulate([['Skipped Events', total_skipped_events],
+                                  ['Processed Events', total_processed_events],
+                                  ["----", ""],
+                                  ['Total', total_skipped_events + total_processed_events]],
+                                 headers=['Description', 'Value'], 
+                                 tablefmt='orgtbl')
+        print(detail_table)
+        print(" ")
+        print(summary_table)
+        print(" ")
+        logger.debug("\n" + detail_table)
+        logger.debug("\n" + summary_table)
 
     def check_connections(self):
         #check connection to aws

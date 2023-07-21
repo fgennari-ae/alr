@@ -127,17 +127,18 @@ class AwsHelper():
                         leave=True)
         for event in iterator:
             local_path_of_tag = session.local_folder + "/" + event.audio_tag
+            logger.debug("Trying to download " + event.remote_path + " to " + local_path_of_tag)
             try:
-                logger.debug("Trying to download " + event.remotep_path + " to " + local_path_of_tag)
                 self.download_file(event.remote_path, local_path_of_tag)
                 event.local_path = local_path_of_tag
                 logger.debug("Succesfully copied file locally")
-            except Exception:
+            except Exception as e:
                 session.skip = True
                 iterator.close()
                 logger.warn("Unable to process event " +
                             event.audio_tag +
-                            " in session... Skipping whole session")
+                            " in session " + session.session_id + ". Skipping whole session")
+                logger.debug("Exception: " + str(e))
                 return
 
     def download_file(self, remote_path, local_path): 

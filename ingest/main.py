@@ -6,4 +6,5 @@ ingestor = EventDataIngest(event_db = GoogleEventDb(),
 if ingestor.check_connections():
     ingestor.retrieve_sessions(timeframe=6)
     ingestor.upload_new_sessions()
+    ingestor.print_report()
 
