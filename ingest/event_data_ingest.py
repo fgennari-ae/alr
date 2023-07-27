@@ -60,11 +60,12 @@ class EventDataIngest:
                 total_skipped_events += len(self.new_sessions[sid].events)
             else:
                 total_processed_events += len(self.new_sessions[sid].events)
-        detail_table_data = [[sid, 
+        detail_table_data = [[sid,
+                              self.new_sessions[sid].raw_metadata["drive_info"]["Data_Info"]["country"],
                               self.new_sessions[sid].skip, 
                               len(self.new_sessions[sid].events)] for sid in self.new_sessions]
         detail_table = tabulate(detail_table_data, 
-                                headers=['Session', 'Skipped', 'Number of Events'], 
+                headers=['Session', 'Country', 'Skipped', 'Number of Events'], 
                                 tablefmt='orgtbl')
         summary_table = tabulate([['Skipped Events', total_skipped_events],
                                   ['Processed Events', total_processed_events],
@@ -100,8 +101,12 @@ class EventDataIngest:
                 self.new_sessions[session_id] = all_new_sessions[session_id]
         if self.new_sessions:
             for session_id in self.new_sessions:
-                #download the audio tags locally for the new session
-                self.aws.get_audio_tags_from_session_locally(self.new_sessions[session_id]) 
+                #download the audio tags locally for the new sessions with events
+                if self.new_sessions[session_id].events:
+                    self.aws.get_audio_tags_from_session_locally(self.new_sessions[session_id])
+                else:
+                    #skipping sessions with no events  (still getting them for the report)
+                    self.new_sessions[session_id].skip=True
             return
         logger.info("No New Session to Upload!")
         return

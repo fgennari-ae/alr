@@ -76,26 +76,28 @@ class AwsHelper():
         pattern_str = r'^\d{6}$'
         for vehicle_folder in result.get('CommonPrefixes'):
             subresult = self.client.list_objects(Bucket=self.bucket, 
-                                            Prefix=vehicle_folder.get('Prefix'), 
-                                            Delimiter='/')
-            for date_folder in subresult.get('CommonPrefixes'):
-                maybe_date = date_folder.get('Prefix').split("/")[1] 
-                if re.match(pattern_str, maybe_date):
-                    year = '20' + maybe_date[0:2]
-                    month = maybe_date[2:4]
-                    day = maybe_date[4:6]
-                    date = datetime.datetime(int(year), int(month) , int(day))
-                    if date >= datetime.datetime.today() - datetime.timedelta(days=timeframe):
-                        subsubresult = self.client.list_objects(Bucket=self.bucket, 
-                                                           Prefix=date_folder.get('Prefix'), 
-                                                           Delimiter='/')
-                        for time_folder in subsubresult.get('CommonPrefixes'):
-                            if re.match(pattern_str, time_folder.get('Prefix').split("/")[2]):
-                                finalresult = self.client.list_objects(Bucket=self.bucket, 
-                                                                  Prefix=time_folder.get('Prefix'), 
-                                                                  Delimiter='/')
-                                for session_folder in finalresult.get('CommonPrefixes'):
-                                    output.append(session_folder.get('Prefix'))
+                                                 Prefix=vehicle_folder.get('Prefix'), 
+                                                 Delimiter='/')
+            #checking if the folder is not empty
+            if subresult.get('CommonPrefixes'):
+                for date_folder in subresult.get('CommonPrefixes'):
+                    maybe_date = date_folder.get('Prefix').split("/")[1] 
+                    if re.match(pattern_str, maybe_date):
+                        year = '20' + maybe_date[0:2]
+                        month = maybe_date[2:4]
+                        day = maybe_date[4:6]
+                        date = datetime.datetime(int(year), int(month) , int(day))
+                        if date >= datetime.datetime.today() - datetime.timedelta(days=timeframe):
+                            subsubresult = self.client.list_objects(Bucket=self.bucket, 
+                                                               Prefix=date_folder.get('Prefix'), 
+                                                               Delimiter='/')
+                            for time_folder in subsubresult.get('CommonPrefixes'):
+                                if re.match(pattern_str, time_folder.get('Prefix').split("/")[2]):
+                                    finalresult = self.client.list_objects(Bucket=self.bucket, 
+                                                                      Prefix=time_folder.get('Prefix'), 
+                                                                      Delimiter='/')
+                                    for session_folder in finalresult.get('CommonPrefixes'):
+                                        output.append(session_folder.get('Prefix'))
         return output
    
 
@@ -104,20 +106,19 @@ class AwsHelper():
         session_report_path = self._get_session_report(path)
         if session_report_path:
             session_metadata = self._get_session_metadata(session_report_path)
-            #checking only sessions with voice annotations
+            #adding voice annotations
             audio_tags_relative_paths = self._get_session_annotations_paths(session_metadata)
-            if audio_tags_relative_paths:
-                session_id = path.split("/")[-2]
-                session = Session(session_id = session_id, 
-                                  metadata = session_metadata,
-                                  download_folder = self.local_download_folder)
-                session.create_local_folder()
-                for tag_rel_path in audio_tags_relative_paths: 
-                    audio_tag_name = tag_rel_path.split("/")[-1]
-                    current_event = Event(audio_tag=audio_tag_name,
-                                          remote_path=path+tag_rel_path)
-                    session.append_event(current_event)
-                return session
+            session_id = path.split("/")[-2]
+            session = Session(session_id = session_id, 
+                              metadata = session_metadata,
+                              download_folder = self.local_download_folder)
+            session.create_local_folder()
+            for tag_rel_path in audio_tags_relative_paths: 
+                audio_tag_name = tag_rel_path.split("/")[-1]
+                current_event = Event(audio_tag=audio_tag_name,
+                                      remote_path=path+tag_rel_path)
+                session.append_event(current_event)
+            return session
         return None
     
     def get_audio_tags_from_session_locally(self, session):
