@@ -1,3 +1,4 @@
 *.pyc
 ingest/credentials/*
 ingest/logs/*
+vw_ingest/logs/*

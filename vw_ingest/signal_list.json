@@ -1,0 +1,160 @@
+{
+	"signals":[
+		{
+		    	"name": 	"vehicle_speed",
+		    	"can_name":    	"VehicleSpeed_Prim",
+			"type": 	"Float",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"long_acceleration",
+		    	"can_name":    	"LongitudinalAcceleration_Stat",
+			"type": 	"Float",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"long_acceleration_request",
+		    	"can_name":    	"LongitudinalAcceleration_Rq",
+			"type": 	"Float",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"steering_rack_pos",
+		    	"can_name":    	"SteeringRackPosition_Stat",
+			"type": 	"Float",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"steering_rack_pos_request",
+		    	"can_name":    	"SteeringRackPosition_Rq",
+			"type": 	"Float",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"steering_rack_pos_rate",
+		    	"can_name":    	"SteeringRackPositionRate_Stat",
+			"type": 	"Float",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"brake_pedal_position",
+		    	"can_name":    	"EBKV_Bremspedalweg",
+			"type": 	"Float",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"throttle_pedal_position",
+		    	"can_name":    	"MO_Fahrpedalrohwert_01",
+			"type": 	"Float",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"driver_intervention_accelerator",
+		    	"can_name":    	"DriverIntervention_Accelerator",
+			"type": 	"Bool",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"driver_intervention_steering",
+		    	"can_name":    	"DriverIntervention_Steering",
+			"type": 	"Bool",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"driver_intervention_braking",
+		    	"can_name":    	"DriverIntervention_Brake",
+			"type": 	"Bool",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"turn_indicator_left",
+		    	"can_name":    	"SAL_Blinkerzyklus_L",
+			"type": 	"String",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"turn_indicator_right",
+		    	"can_name":    	"SAL_Blinkerzyklus_R",
+			"type": 	"String",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"gear_status",
+		    	"can_name":    	"GearSelection_Stat",
+			"type": 	"String",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"engagement_primary",
+		    	"can_name":    	"Engagement_Prim_Stat",
+			"type": 	"String",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+		    	"name": 	"engagement_secondary",
+		    	"can_name":    	"Engagement_Scnd_Stat",
+			"type": 	"String",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+			"name": 	"latitude", 
+			"can_name": 	"GPS_Breitengrad_UBX",
+			"type": 	"GPS",
+			"skip": 	false,
+			"extracted": 	false
+		},
+		{
+			"name": 	"longitude", 
+			"can_name": 	"GPS_Laengengrad_UBX",
+			"type": 	"GPS",
+			"skip": 	false,
+			"extracted": 	false
+		}
+	],
+	"timestamps_gin":[
+		{
+			"year": 	"GiN_internal_SYSTEM_Year",
+			"month":	"GiN_internal_SYSTEM_Month",
+			"day":		"GiN_internal_SYSTEM_Day",
+			"hour":		"GiN_internal_SYSTEM_Hour",
+			"minute":	"GiN_internal_SYSTEM_Minute",
+			"second":	"GiN_internal_SYSTEM_Second"
+		}
+	],
+	"timestamps_gps":[
+		{
+			"year":		"GPS__Jahr",
+			"month": 	"GPS__Monat",
+			"day":		"GPS__Tag",
+			"hour":		"GPS__Stunde",
+			"minute":	"GPS__Minute",
+			"second":	"GPS__Sekunde"
+		}
+	],
+	"timestamps_line_8":[
+		{
+			"year":		"Year",
+			"month": 	"Month",
+			"day":		"Day",
+			"hour":		"Hour",
+			"minute":	"Minute",
+			"second":	"Second"
+		}
+	]
+}
