@@ -145,11 +145,15 @@ class MdfIngestor:
     def _get_events_by_driver_interventions(self):
         sl = self.signal_list['signals']
         logger.debug("Getting Combined list of driver interventions")
-        seconds = self._extract_dr_int_seconds(self.mdf.get('DriverIntervention_Accelerator'),
-                                               self.mdf.get('DriverIntervention_Brake'),
-                                               self.mdf.get('DriverIntervention_Steering'),
-                                               self.mdf.get('Engagement_Prim_Stat'))
-        logger.debug("Found " + str(len(seconds)) + " events")
+        try: 
+            seconds = self._extract_dr_int_seconds(self.mdf.get('DriverIntervention_Accelerator'),
+                                                   self.mdf.get('DriverIntervention_Brake'),
+                                                   self.mdf.get('DriverIntervention_Steering'),
+                                                   self.mdf.get('Engagement_Prim_Stat'))
+            logger.debug("Found " + str(len(seconds)) + " events")
+        except Exception as e: 
+            logger.warning("Unable to find TO events, check if the required signals are missing")
+            logger.warning(e)
 
         for second in seconds:
             self._get_event_by_second(second)
