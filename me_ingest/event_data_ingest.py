@@ -10,7 +10,7 @@ import sys
 
 # Setting Logger
 
-log_filename = datetime.now().strftime('logs/EventDataIngest_%H_%M_%d_%m_%Y.log')
+log_filename = datetime.now().strftime('logs/EventDataIngest-%Y_%m_%d_%H_%M.log')
 file_handler = logging.FileHandler(log_filename)
 file_handler.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler(sys.stdout)
@@ -61,7 +61,7 @@ class EventDataIngest:
             else:
                 total_processed_events += len(self.new_sessions[sid].events)
         detail_table_data = [[sid,
-                              self.new_sessions[sid].raw_metadata["drive_info"]["Data_Info"]["country"],
+                              self.new_sessions[sid].country,
                               self.new_sessions[sid].skip, 
                               len(self.new_sessions[sid].events)] for sid in self.new_sessions]
         detail_table = tabulate(detail_table_data, 

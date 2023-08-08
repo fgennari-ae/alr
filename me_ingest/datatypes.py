@@ -1,5 +1,8 @@
 from typing import List
+import logging
 import os
+
+logger = logging.getLogger('DataTypes')
 
 class Event:
     def __init__(self, 
@@ -56,6 +59,12 @@ class Session:
         time_raw = session_id.split("_")[3]
         self.start_time = time_raw[0:2] + ":" + time_raw[2:4] + ":" + time_raw[4:6]
         self.raw_metadata = metadata
+        try:
+            self.country = metadata["drive_info"]["Data_Info"]["country"]
+        except Exception as e:
+            logger.warning("Unable to get session country from metadata for session: " + session_id)
+            logger.debug(e)
+            self.country = "ND"
         self.skip = False
         self.events = []
         self.local_folder = download_folder + session_id + "/" 
@@ -70,10 +79,14 @@ class Session:
         event.vehicle_id = self.vehicle_id
         event.date = self.date
         event.time = self.start_time
-        event.driver = self.raw_metadata["drive_info"]["Base_Data"]["driver"] 
-        event.codriver = self.raw_metadata["drive_info"]["Base_Data"]["co_pilot"] 
-        event.country = self.raw_metadata["drive_info"]["Data_Info"]["country"] 
-        event.mission = self.raw_metadata["drive_info"]["Data_Info"]["driver_comment"] 
+        try:
+            event.driver = self.raw_metadata["drive_info"]["Base_Data"]["driver"] 
+            event.codriver = self.raw_metadata["drive_info"]["Base_Data"]["co_pilot"] 
+            event.country = self.raw_metadata["drive_info"]["Data_Info"]["country"] 
+            event.mission = self.raw_metadata["drive_info"]["Data_Info"]["driver_comment"] 
+        except Exception as e: 
+            logger.warning("There was an error saving session metadata for the current event in session: " + self.session_id)
+            logger.debug(e)
         self.events.append(event)
 
     def print_events(self):
