@@ -60,11 +60,18 @@ class EventDataIngest:
                 total_skipped_events += len(self.new_sessions[sid].events)
             else:
                 total_processed_events += len(self.new_sessions[sid].events)
-        detail_table_data = [[sid,
+        skipped_table_data = [[sid,
                               self.new_sessions[sid].country,
                               self.new_sessions[sid].skip, 
-                              len(self.new_sessions[sid].events)] for sid in self.new_sessions]
-        detail_table = tabulate(detail_table_data, 
+                              len(self.new_sessions[sid].events)] for sid in self.new_sessions if self.new_sessions[sid].skip]
+        processed_table_data = [[sid,
+                              self.new_sessions[sid].country,
+                              self.new_sessions[sid].skip, 
+                              len(self.new_sessions[sid].events)] for sid in self.new_sessions if not self.new_sessions[sid].skip]
+        skipped_table = tabulate(skipped_table_data, 
+                headers=['Session', 'Country', 'Skipped', 'Number of Events'], 
+                                tablefmt='orgtbl')
+        processed_table = tabulate(processed_table_data, 
                 headers=['Session', 'Country', 'Skipped', 'Number of Events'], 
                                 tablefmt='orgtbl')
         summary_table = tabulate([['Skipped Events', total_skipped_events],
@@ -73,11 +80,14 @@ class EventDataIngest:
                                   ['Total', total_skipped_events + total_processed_events]],
                                  headers=['Description', 'Value'], 
                                  tablefmt='orgtbl')
-        print(detail_table)
+        print(skipped_table)
+        print(" ")
+        print(processed_table)
         print(" ")
         print(summary_table)
         print(" ")
-        logger.debug("\n" + detail_table)
+        logger.debug("\n" + skipped_table)
+        logger.debug("\n" + processed_table)
         logger.debug("\n" + summary_table)
 
     def check_connections(self):
