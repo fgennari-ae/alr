@@ -43,6 +43,7 @@ class Event:
         self.mission = mission
         self.remote_path = remote_path
         self.local_path = local_path
+        self.file_url = None
 
     def get_values(self):
         all_values = list(self.__dict__.values())
@@ -66,8 +67,10 @@ class Session:
             logger.debug(e)
             self.country = "ND"
         self.skip = False
+        self.skip_reason = "ND"
         self.events = []
-        self.local_folder = download_folder + session_id + "/" 
+        if download_folder:
+            self.local_folder = download_folder + session_id + "/" 
 
     def create_local_folder(self):
         if not os.path.exists(self.local_folder):

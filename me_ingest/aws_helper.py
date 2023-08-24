@@ -105,10 +105,21 @@ class AwsHelper():
         #read session metadata 
         session_report_path = self._get_session_report(path)
         if session_report_path:
-            session_metadata = self._get_session_metadata(session_report_path)
+            session_id = path.split("/")[-2]
+            try:
+                session_metadata = self._get_session_metadata(session_report_path)
+            except Exception as e:
+                logger.warn("Unable to process metadata in path " +
+                            session_report_path + ":")
+                logger.debug("Exception: " + str(e))
+                session = Session(session_id = session_id,
+                                  metadata = None,
+                                  download_folder = None)
+                session.skip = True
+                session.skip_reason = "Missing metadata"
+                return session
             #adding voice annotations
             audio_tags_relative_paths = self._get_session_annotations_paths(session_metadata)
-            session_id = path.split("/")[-2]
             session = Session(session_id = session_id, 
                               metadata = session_metadata,
                               download_folder = self.local_download_folder)
@@ -135,6 +146,7 @@ class AwsHelper():
                 logger.debug("Succesfully copied file locally")
             except Exception as e:
                 session.skip = True
+                session.skip_reason = "Unable to get event"
                 iterator.close()
                 logger.warn("Unable to process event " +
                             event.audio_tag +

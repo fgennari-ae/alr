@@ -1,5 +1,6 @@
 from datatypes import Session, Event
 from google_event_db import GoogleEventDb
+from mysql_event_db import MySQLEventDb
 from aws_helper import AwsHelper
 from datetime import datetime
 from tabulate import tabulate
@@ -55,21 +56,41 @@ class EventDataIngest:
     def print_report(self):
         total_skipped_events = 0
         total_processed_events = 0
+        empty_table_data = []
+        skipped_table_data = []
+        processed_table_data = []
         for sid in self.new_sessions:
             if self.new_sessions[sid].skip:
                 total_skipped_events += len(self.new_sessions[sid].events)
+                if self.new_sessions[sid].skip_reason != "No Events":
+                    #adding sessions to skipped table data
+                    if len(self.new_sessions[sid].events) > 0:
+                        num_events = len(self.new_sessions[sid].events)
+                    else:
+                        num_events = "Unknown"
+                    skipped_table_data.append([sid,
+                                               self.new_sessions[sid].country,
+                                               self.new_sessions[sid].skip,
+                                               self.new_sessions[sid].skip_reason,
+                                               num_events])
+                elif self.new_sessions[sid].skip_reason == "No Events":
+                    #adding sessions to empty table data
+                    empty_table_data.append([sid,
+                                             self.new_sessions[sid].country,
+                                             self.new_sessions[sid].skip])
             else:
                 total_processed_events += len(self.new_sessions[sid].events)
-        skipped_table_data = [[sid,
-                              self.new_sessions[sid].country,
-                              self.new_sessions[sid].skip, 
-                              len(self.new_sessions[sid].events)] for sid in self.new_sessions if self.new_sessions[sid].skip]
-        processed_table_data = [[sid,
-                              self.new_sessions[sid].country,
-                              self.new_sessions[sid].skip, 
-                              len(self.new_sessions[sid].events)] for sid in self.new_sessions if not self.new_sessions[sid].skip]
+                #adding sessions to processed table data
+                processed_table_data.append([sid,
+                                             self.new_sessions[sid].country,
+                                             self.new_sessions[sid].skip, 
+                                             len(self.new_sessions[sid].events)])
+
+        empty_table = tabulate(empty_table_data, 
+                headers=['Session', 'Country', 'Skipped'], 
+                                tablefmt='orgtbl')
         skipped_table = tabulate(skipped_table_data, 
-                headers=['Session', 'Country', 'Skipped', 'Number of Events'], 
+                headers=['Session', 'Country', 'Skipped', 'Reason', 'Number of Events'], 
                                 tablefmt='orgtbl')
         processed_table = tabulate(processed_table_data, 
                 headers=['Session', 'Country', 'Skipped', 'Number of Events'], 
@@ -80,15 +101,22 @@ class EventDataIngest:
                                   ['Total', total_skipped_events + total_processed_events]],
                                  headers=['Description', 'Value'], 
                                  tablefmt='orgtbl')
+        print("Sessions with no events in metadata file")
+        print(empty_table)
+        print(" ")
+        print("Sessions Skipped")
         print(skipped_table)
         print(" ")
+        print("Sessions Processed")
         print(processed_table)
         print(" ")
+        print("Sessions Processed - Summary")
         print(summary_table)
         print(" ")
-        logger.debug("\n" + skipped_table)
-        logger.debug("\n" + processed_table)
-        logger.debug("\n" + summary_table)
+        logger.debug("Sessions with no Events:\n" + empty_table)
+        logger.debug("Sessions with Events unable to process:\n" + skipped_table)
+        logger.debug("Processed Sessions:\n" + processed_table)
+        logger.debug("Summary:\n" + summary_table)
 
     def check_connections(self):
         #check connection to aws
@@ -116,7 +144,9 @@ class EventDataIngest:
                     self.aws.get_audio_tags_from_session_locally(self.new_sessions[session_id])
                 else:
                     #skipping sessions with no events  (still getting them for the report)
-                    self.new_sessions[session_id].skip=True
+                    if not self.new_sessions[session_id].skip:
+                        self.new_sessions[session_id].skip=True
+                        self.new_sessions[session_id].skip_reason="No Events"
             return
         logger.info("No New Session to Upload!")
         return
