@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 import logging
 import os
@@ -44,6 +45,7 @@ class Event:
         self.remote_path = remote_path
         self.local_path = local_path
         self.file_url = None
+        self.timestamp = None
 
     def get_values(self):
         all_values = list(self.__dict__.values())
@@ -82,6 +84,12 @@ class Session:
         event.vehicle_id = self.vehicle_id
         event.date = self.date
         event.time = self.start_time
+        try:
+            timestamp_string = self.date + " " + self.start_time
+            timestamp_unformatted = datetime.strptime(timestamp_string, '%d/%m/%Y %H:%M:%S')
+            event.timestamp = timestamp_unformatted.strftime('%Y-%m-%d %H:%M:%S')
+        except Exception as e:
+            logger.debug("Unable to get event timestamp: " + str(e))
         try:
             event.driver = self.raw_metadata["drive_info"]["Base_Data"]["driver"] 
             event.codriver = self.raw_metadata["drive_info"]["Base_Data"]["co_pilot"] 

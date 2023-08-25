@@ -3,6 +3,8 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 import speech_recognition as sr
 from event_db import EventDb
+from datetime import datetime
+
 import requests
 import json
 import pymysql
@@ -10,7 +12,7 @@ import logging
 import gspread
 import os
 
-logger = logging.getLogger('GoogleEventDb')
+logger = logging.getLogger('MySQLEventDb')
 
 class MySQLEventDb(EventDb):
 
@@ -76,10 +78,10 @@ class MySQLEventDb(EventDb):
         sql = "INSERT INTO sds (vehicle,\
                                 country,\
                                 city,\
-                                time,\
-                                date,\
+                                timestamp,\
                                 comment,\
                                 annotation,\
+                                sds_provider_id,\
                                 sw_release,\
                                 session_id,\
                                 map_version,\
@@ -88,14 +90,13 @@ class MySQLEventDb(EventDb):
                                 log_slice_link,\
                                 mission,\
                                 mission_segment) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-
         cursor.execute(sql, (event.vehicle_id,          
                              event.country,      
                              event.city,               
-                             event.time,                                                                                                                                                                        
-                             event.date,                                                                                                                                                                  
+                             event.timestamp,                                                                                                                                                                        
                              event.comment,                                                                                                                                                         
                              event.annotation,                                                                                                                                                         
+                             event.audio_tag,                                                                                                                                                         
                              event.sw_release,                                                                                                                                             
                              event.session_id,                                                                                                                                 
                              event.map_version,                                                                                                                    

@@ -1,0 +1,122 @@
+
+DEBUG:EventDataIngest:Sessions with Events unable to process:
+| Session                       | Country                  | Skipped   | Reason              |   Number of Events |
+|-------------------------------+--------------------------+-----------+---------------------+--------------------|
+| AV11_BZ02_230816_160206_0000  | United States of America | True      | Unable to get event |                  2 |
+| AV11_BZ02_230817_171547_0000  | United States of America | True      | Unable to get event |                 24 |
+| AV11_BZ02_230817_182443_0000  | United States of America | True      | Unable to get event |                 25 |
+| AV11_BZ02_230818_152253_0000  | United States of America | True      | Unable to get event |                 21 |
+| AV11_BZ02_230818_162428_0000  | United States of America | True      | Unable to get event |                 24 |
+| AV11_BZ02_230818_193743_0000  | United States of America | True      | Unable to get event |                 28 |
+| AV11_BZ02_230818_203702_0000  | United States of America | True      | Unable to get event |                 20 |
+| AV11_BZ02_230818_214943_0000  | United States of America | True      | Unable to get event |                 16 |
+| AV11_V229_230810_105810_62100 | Germany                  | True      | Unable to get event |                 47 |
+| AV11_V229_230810_123118_62100 | Germany                  | True      | Unable to get event |                 28 |
+| AV11_V229_230811_074909_62100 | Germany                  | True      | Unable to get event |                 64 |
+| AV11_V233_230822_092311_62100 | Germany                  | True      | Unable to get event |                 25 |
+| AV11_V233_230822_111021_62100 | Germany                  | True      | Unable to get event |                  3 |
+| AV11_V233_230822_111909_62100 | Germany                  | True      | Unable to get event |                 21 |
+| AV11_V233_230822_122656_62100 | Germany                  | True      | Unable to get event |                 25 |
+| AV11_V237_230808_075253_62100 | Germany                  | True      | Unable to get event |                 42 |
+| AV11_V237_230808_092531_62100 | Germany                  | True      | Unable to get event |                 16 |
+| AV11_V237_230808_105855_62100 | Germany                  | True      | Unable to get event |                  2 |
+| AV11_V237_230808_111232_62100 | Germany                  | True      | Unable to get event |                 25 |
+| AV11_V237_230810_074935_62100 | Germany                  | True      | Unable to get event |                 20 |
+| AV11_V237_230810_090240_62100 | Germany                  | True      | Unable to get event |                 18 |
+| AV11_V237_230810_124834_62100 | Germany                  | True      | Unable to get event |                 27 |
+| AV11_V237_230810_133841_62100 | Germany                  | True      | Unable to get event |                  5 |
+| AV11_V237_230811_075451_62100 | Germany                  | True      | Unable to get event |                 22 |
+| AV11_V237_230811_085908_62100 | Germany                  | True      | Unable to get event |                  8 |
+| AV11_V237_230811_104301_62100 | Germany                  | True      | Unable to get event |                  3 |
+| AV11_V237_230811_105646_62100 | Germany                  | True      | Unable to get event |                 32 |
+| AV11_V237_230817_073056_62100 | Germany                  | True      | Unable to get event |                  3 |
+| AV11_V237_230817_110126_62100 | Germany                  | True      | Unable to get event |                  2 |
+| AV11_V237_230817_122556_62100 | Germany                  | True      | Unable to get event |                  7 |
+| AV11_V237_230818_082041_62100 | Germany                  | True      | Unable to get event |                 41 |
+| AV11_V237_230821_083123_62100 | Germany                  | True      | Unable to get event |                 55 |
+| AV11_V237_230821_111007_62100 | Germany                  | True      | Unable to get event |                 30 |
+| AV11_V237_230821_122132_62100 | Germany                  | True      | Unable to get event |                 22 |
+| AV11_V237_230821_133543_62100 | Germany                  | True      | Unable to get event |                  6 |
+| AV11_V237_230824_112705_62100 | Germany                  | True      | Unable to get event |                 13 |
+| AV11_V238_230809_003533_67033 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V238_230810_205746_68687 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V238_230811_002523_68687 | United States of America | True      | Unable to get event |                  3 |
+| AV11_V238_230811_193455_68687 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V238_230811_214844_68687 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V238_230811_232456_68687 | United States of America | True      | Unable to get event |                  3 |
+| AV11_V238_230814_192113_68687 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V238_230814_200656_68687 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V238_230816_005550_68687 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V238_230816_183749_68687 | United States of America | True      | Unable to get event |                  3 |
+| AV11_V238_230817_184926_68687 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V238_230817_201648_68687 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V238_230817_213326_68687 | United States of America | True      | Unable to get event |                  3 |
+| AV11_V238_230818_001531_69763 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V239_230821_190407_70693 | United States of America | True      | Unable to get event |                 40 |
+| AV11_V239_230822_154057_70693 | United States of America | True      | Unable to get event |                 10 |
+| AV11_V239_230822_165551_70693 | United States of America | True      | Unable to get event |                 18 |
+| AV11_V239_230822_175758_70693 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V239_230822_182012_70693 | United States of America | True      | Unable to get event |                 23 |
+| AV11_V239_230822_195343_70693 | United States of America | True      | Unable to get event |                  9 |
+| AV11_V239_230822_210907_70693 | United States of America | True      | Unable to get event |                 23 |
+| AV11_V239_230822_221943_70693 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V239_230823_153313_70693 | United States of America | True      | Unable to get event |                 14 |
+| AV11_V239_230823_192720_70693 | United States of America | True      | Unable to get event |                  5 |
+| AV11_V239_230823_204345_70693 | United States of America | True      | Unable to get event |                 20 |
+| AV11_V239_230823_213053_70693 | United States of America | True      | Unable to get event |                  6 |
+| AV11_V240_230808_154925_67033 | United States of America | True      | Unable to get event |                  3 |
+| AV11_V240_230809_160933_67033 | United States of America | True      | Unable to get event |                  4 |
+| AV11_V240_230809_165516_67033 | United States of America | True      | Unable to get event |                  4 |
+| AV11_V240_230809_182314_67033 | United States of America | True      | Unable to get event |                  7 |
+| AV11_V240_230809_191419_67033 | United States of America | True      | Unable to get event |                  6 |
+| AV11_V240_230809_201204_67033 | United States of America | True      | Unable to get event |                  7 |
+| AV11_V240_230809_224633_67033 | United States of America | True      | Unable to get event |                 11 |
+| AV11_V240_230811_182341_67033 | United States of America | True      | Unable to get event |                 13 |
+| AV11_V240_230811_200948_67033 | United States of America | True      | Unable to get event |                 10 |
+| AV11_V240_230814_162407_67033 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V240_230814_162550_67033 | United States of America | True      | Unable to get event |                 15 |
+| AV11_V240_230815_153458_67033 | United States of America | True      | Unable to get event |                 11 |
+| AV11_V240_230821_152439_70693 | United States of America | True      | Unable to get event |                 28 |
+| AV11_V240_230821_163017_70693 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V240_230821_172118_70693 | United States of America | True      | Unable to get event |                 37 |
+| AV11_V240_230821_180626_70693 | United States of America | True      | Unable to get event |                 28 |
+| AV11_V240_230821_195850_70693 | United States of America | True      | Unable to get event |                 18 |
+| AV11_V240_230823_154611_70693 | United States of America | True      | Unable to get event |                 21 |
+| AV11_V240_230823_164759_70693 | United States of America | True      | Unable to get event |                  4 |
+| AV11_V240_230823_165838_70693 | United States of America | True      | Unable to get event |                 12 |
+| AV11_V240_230823_180618_70693 | United States of America | True      | Unable to get event |                 22 |
+| AV11_V240_230823_195846_70693 | United States of America | True      | Unable to get event |                 11 |
+| AV11_V240_230823_205337_70693 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V240_230823_210258_70693 | United States of America | True      | Unable to get event |                 10 |
+| AV11_V245_230818_224245_69763 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V245_230821_183903_70693 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V245_230821_191455_70693 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V245_230821_200204_70693 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V245_230821_223451_70693 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V245_230821_230214_70693 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V245_230823_214459_70693 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V245_230824_173551_70693 | United States of America | True      | Unable to get event |                  2 |
+| AV11_V248_230817_175838_68687 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V248_230817_190046_68687 | United States of America | True      | Unable to get event |                  1 |
+| AV11_V39_230814_154904_68687  | United States of America | True      | Unable to get event |                 10 |
+| AV11_V39_230814_164832_68687  | United States of America | True      | Unable to get event |                 12 |
+| AV11_V39_230814_214856_68687  | United States of America | True      | Unable to get event |                 12 |
+| AV11_V39_230816_170530_68687  | United States of America | True      | Unable to get event |                 32 |
+| AV11_V39_230816_181909_68687  | United States of America | True      | Unable to get event |                 35 |
+| AV11_V39_230817_161130_68687  | United States of America | True      | Unable to get event |                 35 |
+| AV11_V39_230817_171031_68687  | United States of America | True      | Unable to get event |                 32 |
+| AV11_V39_230817_181716_68687  | United States of America | True      | Unable to get event |                 12 |
+DEBUG:EventDataIngest:Processed Sessions:
+| Session                       | Country                  | Skipped   |   Number of Events |
+|-------------------------------+--------------------------+-----------+--------------------|
+| AV11_V233_230821_112812_62100 | Germany                  | False     |                 24 |
+| AV11_V233_230821_130638_62100 | Germany                  | False     |                  3 |
+| AV11_V245_230817_231755_69763 | United States of America | False     |                  1 |
+| AV11_V245_230817_232910_69763 | United States of America | False     |                  1 |
+DEBUG:EventDataIngest:Summary:
+| Description      | Value   |
+|------------------+---------|
+| Skipped Events   | 1452    |
+| Processed Events | 29      |
+| ----             |         |
+| Total            | 1481    |
