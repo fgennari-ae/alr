@@ -4,6 +4,7 @@ from pydrive.drive import GoogleDrive
 import speech_recognition as sr
 from event_db import EventDb
 from datetime import datetime
+from pytz import timezone
 
 import requests
 import json
@@ -20,7 +21,7 @@ class MySQLEventDb(EventDb):
         self.jira_api_key = None
         self.team_drive_id = '0AJJkbE1iJ7IcUk9PVA'
         self.root_folder_id='1k1I4UoeHg-N9rZ1KL3bIqUnW1dCrrpMn'
-        self.sessions_on_drive = []
+        self.sessions_in_db = []
         self.cred_file = os.getcwd() + '/credentials/mycreds.txt'
         self.cred_sheet = os.getcwd() + '/credentials/cred_sheet_new.json'
         self.sql_connection = None
@@ -72,6 +73,7 @@ class MySQLEventDb(EventDb):
         
         res = requests.post(url, data=json.dumps(payload), headers=headers)
         event.link_to_audio_file=gfile['embedLink']
+        creation_date = datetime.now(timezone('Europe/Berlin')).strftime('%Y-%m-%d %H:%M:%S')
         event.file_url = 'https://docs.google.com/uc?export=open&id=' + gfile['id']
         logger.debug("Saving event in MySQL Database")
         cursor = self.sql_connection.cursor()
@@ -89,29 +91,38 @@ class MySQLEventDb(EventDb):
                                 codriver,\
                                 log_slice_link,\
                                 mission,\
-                                mission_segment) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                                mission_segment,\
+                                creation_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         cursor.execute(sql, (event.vehicle_id,          
                              event.country,      
                              event.city,               
-                             event.timestamp,                                                                                                                                                                        
-                             event.comment,                                                                                                                                                         
-                             event.annotation,                                                                                                                                                         
-                             event.audio_tag,                                                                                                                                                         
-                             event.sw_release,                                                                                                                                             
-                             event.session_id,                                                                                                                                 
-                             event.map_version,                                                                                                                    
-                             event.driver,                                                                                                            
+                             event.timestamp,
+                             event.comment,
+                             event.annotation,
+                             event.audio_tag,
+                             event.sw_release,
+                             event.session_id,
+                             event.map_version,
+                             event.driver,
                              event.codriver,                                                                                                  
                              event.file_url,                                        
                              event.mission,                               
-                             "ND"))
+                             "ND",
+                             creation_date))
         
         self.sql_connection.commit()
         return gfile
 
     def session_exists(self, session_id):
-        if session_id in self.sessions_on_drive:
-            logger.debug("Found " + session_id + " but the session already exists on drive")
+        cursor = self.sql_connection.cursor()
+        sql = "SELECT EXISTS(SELECT 1 FROM sds WHERE session_id = '" + session_id + "')"
+        
+        cursor.execute(sql)
+        row = cursor.fetchone()
+        
+        session_exists = list(row.values())[0] == 1 
+        if session_exists:
+            logger.debug("Found " + session_id + " but the session already exists in database")
             return True
         return False
     
@@ -142,13 +153,12 @@ class MySQLEventDb(EventDb):
                 'https://www.googleapis.com/auth/drive.file'
                 ]
             # --- get list of available sessions on drive
-            file_list = self.drive.ListFile(
-                    {'q': "'1k1I4UoeHg-N9rZ1KL3bIqUnW1dCrrpMn' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false", 
-                     'corpora': 'teamDrive', 
-                     'teamDriveId': self.team_drive_id, 
-                     'includeTeamDriveItems': True, 
-                     'supportsTeamDrives': True}).GetList() #TODO: Move folder id out
-            self.sessions_on_drive = [i['title'] for i in file_list]
+            #file_list = self.drive.ListFile(
+            #        {'q': "'1k1I4UoeHg-N9rZ1KL3bIqUnW1dCrrpMn' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false", 
+            #         'corpora': 'teamDrive', 
+            #         'teamDriveId': self.team_drive_id, 
+            #         'includeTeamDriveItems': True, 
+            #         'supportsTeamDrives': True}).GetList() #TODO: Move folder id out
             # --- Transcribe
             self.transcriber = sr.Recognizer() 
             logger.info("Succesfully connected to Gdrive database")
