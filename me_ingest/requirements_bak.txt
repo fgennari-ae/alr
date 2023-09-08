@@ -1,0 +1,6 @@
+###### Requirements without Version Specifiers ######
+boto3
+tqdm
+oauth2client
+pydrive
+SpeechRecognition

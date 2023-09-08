@@ -23,7 +23,6 @@ class MySQLEventDb(EventDb):
         self.root_folder_id='1k1I4UoeHg-N9rZ1KL3bIqUnW1dCrrpMn'
         self.sessions_in_db = []
         self.cred_file = os.getcwd() + '/credentials/mycreds.txt'
-        self.cred_sheet = os.getcwd() + '/credentials/cred_sheet_new.json'
         self.sql_connection = None
 
     def _create_session(self, session_id):
