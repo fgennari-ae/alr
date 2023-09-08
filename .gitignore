@@ -1,5 +1,6 @@
 *.pyc
 me_ingest/credentials/*
+me_ingest/client_secrets.json
 me_ingest/logs/*
 vw_ingest/logs/*
 vw_ingest/bags/*
