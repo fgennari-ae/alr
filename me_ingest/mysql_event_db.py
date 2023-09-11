@@ -17,8 +17,8 @@ logger = logging.getLogger('MySQLEventDb')
 
 class MySQLEventDb(EventDb):
 
-    def __init__(self):
-        self.jira_api_key = None
+    def __init__(self, database):
+        self.database = database
         self.team_drive_id = '0AJJkbE1iJ7IcUk9PVA'
         self.root_folder_id='1k1I4UoeHg-N9rZ1KL3bIqUnW1dCrrpMn'
         self.sessions_in_db = []
@@ -161,7 +161,7 @@ class MySQLEventDb(EventDb):
             # --- Transcribe
             self.transcriber = sr.Recognizer() 
             logger.info("Succesfully connected to Gdrive database")
-            self.sql_connection = pymysql.connect(host='localhost', user='alr', password='Alr12345!', database='events', cursorclass=pymysql.cursors.DictCursor)
+            self.sql_connection = pymysql.connect(host='localhost', user='alr', password='Alr12345!', database=self.database, cursorclass=pymysql.cursors.DictCursor)
             logger.info("Succesfully connected to MySQL database")
             return True
         except Exception as e:
