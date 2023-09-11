@@ -83,4 +83,12 @@ docker run -it --network="host" -e AWS_ACCESS_KEY_ID=$(aws --profile default con
 ```
 The flag `--network="host"` will allow to use the local MySQL database instance. Beware that the container is ment to be reworked as soon as the porting to cloud happens.
 
+## To Do
+
+- Implement tests
+- Move from Session based to event based
+- Get more abstraction
+- Implement ES logging 
+- Improved management of credentials with docker
+- Implement recurrent job in docker
 
