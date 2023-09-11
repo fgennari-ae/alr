@@ -85,10 +85,10 @@ The flag `--network="host"` will allow to use the local MySQL database instance.
 
 ## To Do
 
-- [] Implement tests
-- [] Move from Session based to event based
-- [] Get more abstraction
-- [] Implement ES logging 
-- [] Improved management of credentials with docker
-- [] Implement recurrent job in docker
+- [ ] Implement tests
+- [ ] Move from Session based to event based
+- [ ] Get more abstraction
+- [ ] Implement ES logging 
+- [ ] Improved management of credentials with docker
+- [ ] Implement recurrent job in docker
 
