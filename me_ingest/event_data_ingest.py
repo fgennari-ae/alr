@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger('EventDataIngest')
 
 class EventDataIngest:
-     """
+    """
     A class used to represent the Ingest Job, it provides an interface to all the tasks that needs to be performed to get, manipulate and store events from fleet testing.
 
     ...
@@ -49,9 +49,7 @@ class EventDataIngest:
 
     upload_new_sessions()
         uploads the events from new sessions to the database of Events provided
-
     """
-  
     def __init__(self, aws_bucket_name, event_db, temp_folder):
         self.new_sessions = {}
         self._clear_working_folder(temp_folder)
