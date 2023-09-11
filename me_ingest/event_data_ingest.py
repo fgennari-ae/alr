@@ -21,7 +21,37 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger('EventDataIngest')
 
 class EventDataIngest:
-   
+     """
+    A class used to represent the Ingest Job, it provides an interface to all the tasks that needs to be performed to get, manipulate and store events from fleet testing.
+
+    ...
+
+    Attributes
+    ----------
+    new_sessions : str
+        An empty dictionary where the key is the session id that needs to be processed and as value the Session object
+    event_db : EventDb
+        The database class used to store event data
+    aws = AwsHelper
+        An instance of the helper to get data and metadata from the aws bucket
+
+    Methods
+    -------
+    print_report()
+        Prints the report for the processed sessions
+
+    check_connections()
+        Checks the connection to the remote sources (aws, EventDb)
+
+    retrieve_sessions(timeframe)
+        retrieves new sessions in timeframe. As of now this is checking existing sessions and will need to switch to single events
+        TODO: move to single events check.
+
+    upload_new_sessions()
+        uploads the events from new sessions to the database of Events provided
+
+    """
+  
     def __init__(self, aws_bucket_name, event_db, temp_folder):
         self.new_sessions = {}
         self._clear_working_folder(temp_folder)
