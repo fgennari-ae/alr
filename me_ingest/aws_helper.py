@@ -17,7 +17,11 @@ class AwsHelper():
 
     def connect(self):
         try:
-            self.client = boto3.client('s3')
+            with open('/home/ubuntu/alr/me_ingest/credentials.json') as cred_file: #TODO: remove hard coded path
+                credentials = json.load(cred_file)
+            session = boto3.Session(aws_access_key_id=credentials['me']['id'], 
+                                    aws_secret_access_key=credentials['me']['key'])
+            self.client = session.client('s3')
             logger.info("Succesfully connected to aws")
             return True
         except ClientError:

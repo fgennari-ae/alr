@@ -28,8 +28,8 @@ class EventDb(ABC):
                 print('There was an issue creating session ' + session.session_id + ' in database, Skipping')
                 return
             for event in tqdm(session.events, desc="Creating events in database for session: " + session.session_id):
-                event_key = self._create_event_in_session(session_key=session_key, event=event)
-                if not event_key:
+                success = self._create_event_in_session(session_key=session_key, event=event)
+                if not success:
                     print('   [Error] There was an issue uploading event ' + event.audio_tag + ' in session')
 
 
