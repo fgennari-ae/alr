@@ -127,7 +127,7 @@ class MySQLEventDb(EventDb):
             logger.error(e)
             return False
         try:
-            self.sql_connection = pymysql.connect(host='imea-database.cxsljb337cnj.eu-central-1.rds.amazonaws.com', 
+            self.sql_connection = pymysql.connect(host='imea.cxsljb337cnj.eu-central-1.rds.amazonaws.com', 
                                                   user='admin', 
                                                   password='alr12345', 
                                                   database=self.database, 
