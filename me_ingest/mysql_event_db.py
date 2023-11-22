@@ -52,6 +52,7 @@ class MySQLEventDb(EventDb):
                 logger.debug("An exception occurred while transcribing the audio, ignoring")
                 pass
             #add event info 
+        event.annotation=event.audio_tag.split("_")[-1].split(".")[0]
         event.file_url=self.s3_client.generate_presigned_url('get_object', 
                                                                   Params = {'Bucket' : 'alr-event-data', 
                                                                             'Key' : s3_new_key}, 
